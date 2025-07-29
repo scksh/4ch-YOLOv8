@@ -137,7 +137,7 @@ def run_inference(
         except Exception as e:
             print(f"Error processing {rgb_path.name}: {e}")
 
-    print(f"\n[INFO] 모든 이미지 시각화 및 라벨 저장 완료: {rgb_vis_dir}, {thermal_vis_dir}, {labels_dir}")
+    print(f"\nAll images visualizations and labels saved: {rgb_vis_dir}, {thermal_vis_dir}, {labels_dir}")
 
 if __name__ == "__main__":
     import argparse

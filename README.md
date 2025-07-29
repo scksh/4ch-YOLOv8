@@ -116,4 +116,5 @@ If you use this code for your research, please cite our papers.
 
 ## Acknowledgments
 Our code is inspired by 
-- [ultralytics]([https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix](https://github.com/ultralytics/ultralytics))
+- [ultralytics](https://github.com/ultralytics/ultralytics)
+

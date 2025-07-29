@@ -27,8 +27,7 @@
 - GPU: NVIDIA TITAN Xp / A100 (Colab)
 
 ## Colab Notebook
-Thermal-CycleGAN Tutorial: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/scksh/Thermal-CycleGAN/blob/main/Thermal_CycleGAN.ipynb) | [![GitHub](https://img.shields.io/badge/View%20Code-GitHub-blue?logo=github)](https://github.com/scksh/Thermal-CycleGAN/blob/main/Thermal_CycleGAN.ipynb)
-
+Thermal-CycleGAN Tutorial: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/scksh/4ch-YOLOv8/blob/main/4ch-YOLOv8.ipynb) | [![GitHub](https://img.shields.io/badge/View%20Code-GitHub-blue?logo=github)](https://github.com/scksh/4ch-YOLOv8/blob/main/4ch-YOLOv8.ipynb)
 
 ## Getting Started
 ### Installation

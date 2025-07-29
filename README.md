@@ -89,26 +89,27 @@ model_path = hf_hub_download(
     local_dir_use_symlinks=False
 )
 ```
-### Thermal-CycleGAN Train
+### Train
 - Train a model:
 ```bash
-python train.py --dataroot ./datasets/RGBSeg2IR --name RGBSeg2IR --model cycle_gan --direction AtoB --dataset_mode aligned --input_nc 4 --output_nc 1 --gpu_ids 0 --n_epochs 0 --n_epochs_decay 10 --lambda_identity 0 --lr_policy linear
+export KMP_DUPLICATE_LIB_OK=TRUE
+yolo task=detect train model=model/yolov8x_4ch_pretrained.pt data=ultralytics/cfg/datasets/RGBIR.yaml workers=2 epochs=1 batch=8 cos_lr=True
 ```
 
-### Apply a pre-trained mode (Thermal-CycleGAN)
-- Generate the results:
+### Prediction
+- Predict the results:
 ```bash
-python generate.py --rgb_dir ./datasets/RGBSeg2IR/testA --seg_dir ./datasets/RGBSeg2IR/testSegA --model_path ./pretrained/thermal_cyclegan.pth --output_dir ./results/generated_IR --gpu_ids 0
+python predict.py --weights pretrained/4ch-YOLOv8.pt --source_rgb datasets/RGBIR/images/rgb_val --source_ir datasets/RGBIR/images/thermal --project runs/predict --name 4ch-YOLOv8_pred --imgsz 640 --conf 0.4 --iou 0.5 --device cuda
 ```
 
 ## Citation
 If you use this code for your research, please cite our papers.
 ```
 @misc{thermalcyclegan2025,
-  title={Thermal-CycleGAN: Translating RGB+Segmentation to Thermal Images using CycleGAN},
+  title={4ch-YOLOv8: Object detection using 4channel images contain RGB+IR},
   author={Cha, Hyunwoo and Do, Jihoon and Gang, Nayoon and Kim, Seunghwan and Lee, Haerin and Yoon, Youngbin},
   year={2025},
-  howpublished={\url{https://github.com/yourusername/Thermal-CycleGAN}},
+  howpublished={\url{https://github.com/scksh/4ch-YOLOv8}},
   note={GitHub repository}
 }
 ```

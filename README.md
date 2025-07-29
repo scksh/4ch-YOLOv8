@@ -3,9 +3,10 @@
 <br><br><br>
 
 # 4ch-YOLOv8
-이 프로젝트는 YOLOv8의 입력 채널을 확장하여 RGB 이미지와 IR(열화상) 이미지를 동시에 입력받아 객체 탐지를 수행하는 **4채널 YOLOv8** 모델을 구현한 것입니다.
+이 프로젝트에서 개발한 모델 **4ch-YOLOv8**은 RGB + IR(열화상) 이미지로부터 4채널 데이터를 입력으로 사용하는 YOLOv8모델 기반의 객체 탐지 모델입니다.
 
-기존 RGB 기반 탐지 모델 대비, IR 정보를 보강함으로써 위장 객체(Camouflaged Object) 및 어두운 환경에서 강인한 성능 향상을 목표로 합니다.
+기존 RGB 기반 모델은 육안으로 구분되지 않는 위장된 객체나 야간 상황등의 객체를 탐지하는 데 한계가 있었으며  
+이를 해결하기 위해 **IR(열화상) 정보를 추가한 4채널 모델**을 통해 위장 객체 탐지 성능을 개선했습니다.
 <p align="center">
   <img src="./imgs/Thermal_CycleGAN_architecture.png" width="900"/>
   <img src="./imgs/results.png" width="900"/>

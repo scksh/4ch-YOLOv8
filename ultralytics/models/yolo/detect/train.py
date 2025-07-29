@@ -7,8 +7,6 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import torch.nn as nn
-import torch
-import torch.nn.functional as F
 
 from ultralytics.data import build_dataloader, build_yolo_dataset
 from ultralytics.engine.trainer import BaseTrainer

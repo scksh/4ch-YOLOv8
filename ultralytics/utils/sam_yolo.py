@@ -1,10 +1,10 @@
 import os
+
 import cv2
-import torch
 import numpy as np
+import torch
 from PIL import Image
-from torchvision import transforms
-from transformers import CLIPSegProcessor, CLIPSegForImageSegmentation
+from transformers import CLIPSegForImageSegmentation, CLIPSegProcessor
 
 # 🔧 경로 설정
 image_dir = "/home/ricky/Data/Animal/images"
@@ -28,11 +28,7 @@ for fname in sorted(os.listdir(image_dir)):
     image = Image.open(image_path).convert("RGB")
 
     # ✂️ 입력 전처리
-    inputs = processor(
-        text=[prompt],
-        images=[image],
-        return_tensors="pt"
-    ).to(model.device)
+    inputs = processor(text=[prompt], images=[image], return_tensors="pt").to(model.device)
 
     with torch.no_grad():
         outputs = model(**inputs)

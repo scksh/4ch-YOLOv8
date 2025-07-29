@@ -1,9 +1,12 @@
-import cv2
-import torch
-import numpy as np
 from pathlib import Path
+
+import cv2
+import numpy as np
+import torch
+
 from ultralytics import YOLO
 from ultralytics.utils.plotting import colors
+
 
 # ✅ YOLO 스타일 유지 + 조절된 라벨 박스
 class CustomAnnotator:
@@ -13,7 +16,7 @@ class CustomAnnotator:
         self.font_size = font_size
         self.font = cv2.FONT_HERSHEY_SIMPLEX
 
-    def box_label(self, box, label='', color=(128, 128, 128), txt_color=(255, 255, 255)):
+    def box_label(self, box, label="", color=(128, 128, 128), txt_color=(255, 255, 255)):
         x1, y1, x2, y2 = map(int, box)
         cv2.rectangle(self.im, (x1, y1), (x2, y2), color, thickness=self.line_width)
 
@@ -29,11 +32,20 @@ class CustomAnnotator:
 
             cv2.rectangle(self.im, top_left, bottom_right, color, -1)
             text_thickness = 3
-            cv2.putText(self.im, label, (x1, y1 - baseline), self.font, self.font_size,
-                        txt_color, text_thickness, lineType=cv2.LINE_AA)
+            cv2.putText(
+                self.im,
+                label,
+                (x1, y1 - baseline),
+                self.font,
+                self.font_size,
+                txt_color,
+                text_thickness,
+                lineType=cv2.LINE_AA,
+            )
 
     def result(self):
         return self.im
+
 
 # ✅ 디바이스 설정
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -104,8 +116,8 @@ for idx, rgb_path in enumerate(image_list, 1):
     img_tensor = img_tensor.to(device)
 
     with torch.no_grad():
-     results = model.predict(img_tensor, conf=0.5, verbose=False, device=device, iou=0.5, max_det=100)[0]
-   
+        results = model.predict(img_tensor, conf=0.5, verbose=False, device=device, iou=0.5, max_det=100)[0]
+
     boxes = results.boxes
     print(f"📦 탐지된 객체 수: {len(boxes)}")
 
@@ -154,8 +166,8 @@ for idx, rgb_path in enumerate(image_list, 1):
 
     if not video_writer_initialized:
         h, w = rgb_result.shape[:2]
-        rgb_out = cv2.VideoWriter(str(rgb_video_path), cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-        thermal_out = cv2.VideoWriter(str(thermal_video_path), cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
+        rgb_out = cv2.VideoWriter(str(rgb_video_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+        thermal_out = cv2.VideoWriter(str(thermal_video_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
         video_writer_initialized = True
 
     rgb_out.write(rgb_result)

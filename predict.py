@@ -1,11 +1,13 @@
 import argparse
 import os
-import cv2
-import torch
-import numpy as np
 from pathlib import Path
-from ultralytics import YOLO
+
+import cv2
+import numpy as np
+import torch
 from tqdm import tqdm
+
+from ultralytics import YOLO
 
 
 def load_image_pair(rgb_path, ir_path, img_size):
@@ -28,7 +30,7 @@ def load_image_pair(rgb_path, ir_path, img_size):
 
 
 def save_txt(result, save_path, img_shape):
-    with open(save_path, 'w') as f:
+    with open(save_path, "w") as f:
         for box in result.boxes:
             cls = int(box.cls)
             conf = box.conf.item()
@@ -44,12 +46,11 @@ def save_txt(result, save_path, img_shape):
 
 
 def run_inference(
-    weights, source_rgb, source_ir, project, name,
-    imgsz=640, conf=0.25, iou=0.45, max_det=100, device='cuda'
+    weights, source_rgb, source_ir, project, name, imgsz=640, conf=0.25, iou=0.45, max_det=100, device="cuda"
 ):
     save_dir = os.path.join(project, name)
     os.makedirs(save_dir, exist_ok=True)
-    label_dir = os.path.join(save_dir, 'labels')
+    label_dir = os.path.join(save_dir, "labels")
     os.makedirs(label_dir, exist_ok=True)
 
     model = YOLO(weights)
@@ -67,13 +68,7 @@ def run_inference(
 
         img_tensor = load_image_pair(rgb_path, ir_path, imgsz).to(device)
 
-        results = model(
-            img_tensor,
-            conf=conf,
-            iou=iou,
-            max_det=max_det,
-            verbose=False
-        )
+        results = model(img_tensor, conf=conf, iou=iou, max_det=max_det, verbose=False)
 
         base_name = Path(rgb_path).stem
         txt_path = os.path.join(label_dir, f"{base_name}.txt")
@@ -105,5 +100,5 @@ if __name__ == "__main__":
         conf=args.conf,
         iou=args.iou,
         max_det=args.max_det,
-        device=args.device
+        device=args.device,
     )

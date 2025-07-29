@@ -1,15 +1,17 @@
-import torch
-from ultralytics import YOLO
 import os
 
+import torch
+
+from ultralytics import YOLO
+
 # 0. Define paths
-YAML_PATH = 'ultralytics/cfg/models/v8/yolov8n.yaml'  # Must contain `in_channels: 4`
-OUTPUT_PATH = 'model/yolov8n_4ch_pretrained.pt'
+YAML_PATH = "ultralytics/cfg/models/v8/yolov8n.yaml"  # Must contain `in_channels: 4`
+OUTPUT_PATH = "model/yolov8n_4ch_pretrained.pt"
 
 # 1. Automatically download pretrained yolov8x.pt
 print("⬇️ Downloading pretrained YOLOv8n model using Ultralytics...")
-yolo_model = YOLO('yolov8n.pt')  # This triggers download and loads the model
-PRETRAINED_PATH = yolo_model.ckpt_path if hasattr(yolo_model, "ckpt_path") else 'yolov8n.pt'
+yolo_model = YOLO("yolov8n.pt")  # This triggers download and loads the model
+PRETRAINED_PATH = yolo_model.ckpt_path if hasattr(yolo_model, "ckpt_path") else "yolov8n.pt"
 print(f"✅ Download complete: {PRETRAINED_PATH}")
 
 # 2. Load pretrained model state_dict
@@ -28,9 +30,9 @@ new_conv = torch.nn.Conv2d(
     kernel_size=original_conv.kernel_size,
     stride=original_conv.stride,
     padding=original_conv.padding,
-    bias=original_conv.bias is not None
+    bias=original_conv.bias is not None,
 )
-torch.nn.init.kaiming_normal_(new_conv.weight, mode='fan_out', nonlinearity='relu')
+torch.nn.init.kaiming_normal_(new_conv.weight, mode="fan_out", nonlinearity="relu")
 model_4ch.model.model[0].conv = new_conv
 print("✅ First Conv2d layer updated to 4-channel input.")
 

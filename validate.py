@@ -108,29 +108,32 @@
 #     run(**vars(opt))
 
 import argparse
-import torch
-from ultralytics import YOLO
-from torch.utils.data import DataLoader
-from ultralytics.data.custom_dataset import YOLO4ChannelDataset
 from pathlib import Path
-import yaml
 from types import SimpleNamespace
+
+import torch
+import yaml
+from torch.utils.data import DataLoader
+
+from ultralytics import YOLO
+from ultralytics.data.custom_dataset import YOLO4ChannelDataset
 from ultralytics.models.yolo.detect.val import DetectionValidator
+
 
 def run(weights, data, imgsz, batch, name, workers, hyp):
     model = YOLO(weights)
 
     # 1. 데이터 YAML 로딩
-    with open(data, 'r', encoding='utf-8') as f:
+    with open(data, encoding="utf-8") as f:
         data_cfg = yaml.safe_load(f)
-    img_dir = data_cfg['val']
+    img_dir = data_cfg["val"]
 
     # 2. hyp.yaml 또는 args.yaml 전체 로딩
     hyp_obj = {}
     args_namespace = {}
     if hyp:
         hyp_path = Path(hyp)
-        with open(hyp_path, 'r', encoding='utf-8') as f:
+        with open(hyp_path, encoding="utf-8") as f:
             hyp_dict = yaml.safe_load(f)
         hyp_obj = SimpleNamespace(**hyp_dict)
         args_namespace = hyp_dict
@@ -149,9 +152,9 @@ def run(weights, data, imgsz, batch, name, workers, hyp):
         stride=32,
         pad=0.5,
         prefix="val: ",
-        task='detect',
+        task="detect",
         data=data_cfg,
-        classes=None
+        classes=None,
     )
 
     # 4. Dataloader 구성
@@ -161,7 +164,7 @@ def run(weights, data, imgsz, batch, name, workers, hyp):
         shuffle=False,
         num_workers=workers,
         pin_memory=True,
-        collate_fn=dataset.collate_fn
+        collate_fn=dataset.collate_fn,
     )
 
     # 5. validator 설정 및 실행
@@ -186,9 +189,9 @@ def run(weights, data, imgsz, batch, name, workers, hyp):
         max_det=args_namespace.get("max_det", 300),
         classes=args_namespace.get("classes", None),
         rect=args_namespace.get("rect", False),
-        split=args_namespace.get("split", 'val'),
-        task='val',
-        mode='val',
+        split=args_namespace.get("split", "val"),
+        task="val",
+        mode="val",
         val=True,
         dnn=args_namespace.get("dnn", False),
         retina_masks=args_namespace.get("retina_masks", False),
@@ -197,7 +200,7 @@ def run(weights, data, imgsz, batch, name, workers, hyp):
         save_crop=args_namespace.get("save_crop", False),
         line_width=args_namespace.get("line_width", None),
         single_cls=args_namespace.get("single_cls", False),
-        agnostic_nms=args_namespace.get("agnostic_nms", False)
+        agnostic_nms=args_namespace.get("agnostic_nms", False),
     )
     validator.model = model.model.to("cuda" if torch.cuda.is_available() else "cpu")
     validator.dataloader = dataloader
@@ -211,6 +214,7 @@ def run(weights, data, imgsz, batch, name, workers, hyp):
         preds = validator.model(batch["img"], augment=False)
         preds = validator.postprocess(preds)
         validator.plot_predictions(batch, preds, ni)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

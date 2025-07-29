@@ -5,7 +5,7 @@
 
 기존 RGB 기반 모델은 육안으로 구분되지 않는 위장된 객체나 야간 상황등의 객체를 탐지하는 데 한계가 존재하며 이를 해결하기 위해 **IR(열화상) 정보를 추가한 4채널 모델**을 통해 위장 객체 탐지 성능을 개선했습니다.
 <p align="center">
-  <img src="./imgs/UI1.gif" width="900"/>
+  <img src="./imgs/UI2.gif" width="900"/>
   <img src="./imgs/UI4.gif" width="900"/>
 </p>
 

@@ -57,15 +57,16 @@ def run_inference(
     model.to(device)
 
     rgb_paths = sorted(Path(source_rgb).glob("*"))
-    ir_paths = sorted(Path(source_ir).glob("*"))
+    ir_paths_dict = {p.stem: p for p in Path(source_ir).glob("*")}
 
-    assert len(rgb_paths) == len(ir_paths), "RGB and IR image counts must match"
+    matched_pairs = [
+        (rgb_path, ir_paths_dict[rgb_path.stem])
+        for rgb_path in rgb_paths
+        if rgb_path.stem in ir_paths_dict
+    ]
 
-    for rgb_path, ir_path in tqdm(zip(rgb_paths, ir_paths), total=len(rgb_paths)):
-        rgb_path = str(rgb_path)
-        ir_path = str(ir_path)
-
-        img_tensor = load_image_pair(rgb_path, ir_path, imgsz).to(device)
+    for rgb_path, ir_path in tqdm(matched_pairs):
+        img_tensor = load_image_pair(str(rgb_path), str(ir_path), imgsz).to(device)
 
         results = model(
             img_tensor,
@@ -75,7 +76,7 @@ def run_inference(
             verbose=False
         )
 
-        base_name = Path(rgb_path).stem
+        base_name = rgb_path.stem
         txt_path = os.path.join(label_dir, f"{base_name}.txt")
 
         save_txt(results[0], txt_path, (imgsz, imgsz))

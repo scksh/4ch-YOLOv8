@@ -1,12 +1,16 @@
 > **본 프로젝트는 한화에어로스페이스 스마트 국방 데이터 분석과정 3기의 ```4채널을 활용한 위장 객체 탐지 고도화``` 프로젝트의 서브프로젝트로 수행되었습니다.**
-<img src="imgs/my_black_poodle.gif" align="right" width="384">
-
 
 <br><br><br>
-<br><br><br>
 
-# Thermal-CycleGAN
-**Thermal-CycleGAN**은 RGB 이미지와 해당 Segmentation Map을 결합한 4채널을 입력으로 받아 대응되는 IR(열화상) 이미지를 생성하는 Unpaired Image-to-Image Translation 모델입니다.
+# 4ch-YOLOv8
+이 프로젝트에서 개발한 모델 **4ch-YOLOv8**은 RGB + IR(열화상) 이미지로부터 4채널 데이터를 입력으로 사용하는 YOLOv8모델 기반의 객체 탐지 모델입니다.
+기존 RGB 기반 모델은 육안으로 구분되지 않는 위장된 객체나 야간 상황등의 객체를 탐지하는 데 한계가 있습니다.   
+이를 해결하기 위해 **IR(열화상) 정보를 추가한 4채널 모델**을 통해 위장 객체 탐지 성능을 개선하고자 합니다.
+
+## Key Modification
+### YOLOv8 구조 기반 확장
+ - 기존의 YOLOv8 첫 번째 Conv layer(conv1)를 3→4채널로 수정
+ - 학습 파라미터 초기값으로 conv1은 랜덤 초기화, 나머지 레이어는 pretrained weights 사용
 
 CycleGAN 아키텍처를 기반으로 하며 입력 채널 수와 출력 채널 수를 수정하여 **RGB+Seg → IR** 변환에 특화된 모델로 학습되었습니다.
 <p align="center">

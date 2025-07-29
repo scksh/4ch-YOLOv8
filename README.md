@@ -34,45 +34,61 @@ Thermal-CycleGAN Tutorial: [![Open In Colab](https://colab.research.google.com/a
 
 - Clone this repo:
 ```bash
-git clone https://github.com/scksh/Thermal-CycleGAN
-cd Thermal-CycleGAN
+git clone https://github.com/scksh/4ch-YOLOv8
+cd 4ch-YOLOv8
 ```
-- For pip users, please type the command `pip install -r requirements.txt`.
+- install libraries:
+```bash
+pip install -r requirements.txt
+pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu126
+pip install -e ../4ch-YOLOv8
+```
 
 ### Download Dataset (HuggingFace)
-- You can download the `RGBSeg2IR` dataset directly from Hugging Face Hub using the following Python code:
+- You can download the `RGBIR` dataset directly from Hugging Face Hub using the following Python code:
 ```python
 from huggingface_hub import hf_hub_download
 import zipfile
 
 # Download dataset
 zip_path = hf_hub_download(
-    repo_id="SUMMERZETT/RGBSeg2IR",
-    filename="RGBSeg2IR.zip",
+    repo_id="SUMMERZETT/RGBIR",
+    filename="RpGBIR.zip",
     repo_type="dataset"
 )
 
 with zipfile.ZipFile(zip_path, 'r') as zip_ref:
     zip_ref.extractall("./datasets")
 ```
-- To view training results and loss plots, run `python -m visdom.server` and click the URL http://localhost:8097.
-- To log training progress and test images to W&B dashboard, set the `--use_wandb` flag with train and test script
 
-### Download pre-trained model (Thermal-CycleGAN)
-- To download the pretrained Thermal-CycleGAN model from Hugging Face, use the following code:
+### Download Initial weight
+- To download the Initial weight for 4ch-YOLOv8 model from Hugging Face, use the following code:
 ```python
 from huggingface_hub import hf_hub_download
 
 # Download pretrained model
 model_path = hf_hub_download(
-    repo_id="SUMMERZETT/Thermal-CycleGAN",
-    filename="thermal_cyclegan.pth",
+    repo_id="SUMMERZETT/YOLOv8_pretrained",
+    filename="yolov8x_4ch_pretrained.pt",
+    repo_type="model",
+    local_dir="./model",
+    local_dir_use_symlinks=False
+)
+```
+### Download Pre-trained model
+- To download the pretrained 4ch-YOLOv8 model from Hugging Face, use the following code:
+```python
+from huggingface_hub import hf_hub_download
+
+# Download pretrained model
+model_path = hf_hub_download(
+    repo_id="SUMMERZETT/4ch-YOLOv8",
+    filename="4ch-YOLOv8.pt",
     repo_type="model",
     local_dir="./pretrained",
     local_dir_use_symlinks=False
 )
 ```
-
 ### Thermal-CycleGAN Train
 - Train a model:
 ```bash
